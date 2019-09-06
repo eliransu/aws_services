@@ -19,7 +19,6 @@ const client = new Twitter({
 client.stream("statuses/filter", { track: 'javascript' }, function (stream) {
   stream.on("data", function (tweet) {
     if (tweet.entities.urls.length > 0) {
-      console.log('ok!!')
       const { text, id, timestamp_ms } = tweet;
 
       const urls = [];
@@ -29,7 +28,7 @@ client.stream("statuses/filter", { track: 'javascript' }, function (stream) {
       }
 
       const tweetData = {
-        track: process.env.track,
+        track: 'javascript',
         text,
         id,
         timestamp_ms,
@@ -42,7 +41,7 @@ client.stream("statuses/filter", { track: 'javascript' }, function (stream) {
       metric.sendMetric("fetch-service", "Url", urls.length, [
         {
           Name: "track",
-          Value: process.env.track
+          Value: 'javascript'
         }
       ]);
     }
