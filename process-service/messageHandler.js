@@ -18,12 +18,11 @@ async function handleMessages() {
             const pages = await getPages(jsonMsg);
 
             for (let i = 0; i < pages.length; i++) {
-              const page = pages[i];
-
+              const page = pages[i]
               const startScrap = Date.now();
               const dataAboutPage = scrapper.scrap(page);
               const endScrap = Date.now();
-              metric.sendMetric("process-service", "time-scrap", endScrap-startScrap, []);
+              metric.sendMetric("process-service", "time-scrap", endScrap - startScrap, []);
 
               dataAboutPage.track = jsonMsg.track;
               dataAboutPage.link = jsonMsg.urls[i];
@@ -31,7 +30,7 @@ async function handleMessages() {
               const startScreenshot = Date.now();
               const image = await screen.screenshot(dataAboutPage.link);
               const endScreenshot = Date.now();
-              metric.sendMetric("process-service", "time-screenshot", endScreenshot-startScreenshot, []);
+              metric.sendMetric("process-service", "time-screenshot", endScreenshot - startScreenshot, []);
 
 
               const imageS3Url = await s3.putImage(image);
@@ -44,11 +43,9 @@ async function handleMessages() {
                 content: dataAboutPage.text,
                 timestamp: dataAboutPage.time,
                 imageurl: dataAboutPage.s3ImageUrl,
-                track:dataAboutPage.track,
+                track: dataAboutPage.track,
               });
             }
-            // upload to s3 -> save path in db ().
-            // console.log(pages);
             sqs.deleteMessage(msg.ReceiptHandle);
           } catch (err) {
             console.error(

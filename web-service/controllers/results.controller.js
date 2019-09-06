@@ -1,19 +1,19 @@
 const resultService = require('../services/results.service');
 const metric = require("../../shared/metric");
 
-async function getResults(req, res){
+async function getResults(req, res) {
     const start = Date.now();
-    try{
-        const result = await resultService.getAllItems(req.query.track || req.query.query);
+    try {
+        const result = await resultService.getAllItems(req.query.track);
         res.status(200).json(result);
-    } catch(e){
+    } catch (e) {
         res.status(500).json({
-            err:e.message
+            err: e.message
         });
         console.error(`Failed to get result message: ${e.message} \n stack trace: ${e.stack}`);
     }
     const end = Date.now()
-    metric.sendMetric("web-service", "api-response-time", end-start);
+    metric.sendMetric("web-service", "api-response-time", end - start);
 
 }
 module.exports = {
