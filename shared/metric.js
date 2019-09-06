@@ -13,7 +13,6 @@ module.exports = {
       MetricData: [
         {
           MetricName: metricName,
-
           Dimensions: dimArray,
           Timestamp: new Date(),
           Unit: "Count",
